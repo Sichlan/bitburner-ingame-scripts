@@ -2,8 +2,8 @@
  * Upgrades all bots to the desired ram value
  * @param {NS} ns 
  */
-export async function main(ns, args) {
-	let newRam = 128; //ns.getPurchasedServerMaxRam();
+export async function main(ns) {
+	let newRam = 32; //ns.getPurchasedServerMaxRam();
 
 	for (let i = 0; i < 25; i++) {
 		let target = 'pserv-' + i;

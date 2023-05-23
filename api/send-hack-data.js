@@ -1,12 +1,22 @@
-const nodes = []
+import { find_nodes } from '/util/network-util.js'
 
+/** @param {NS} ns */
 export async function main(ns) {
-    await find_nodes(ns, 'home')
-
     while(true) {
         let server = {}
+
+        const nodes = await find_nodes(ns, 'home', []);
+
         nodes.forEach(node => {
-            server[node] = ns.getServer(node)
+            try {
+                let s = ns.getServer(node)
+                server[node] = s
+                server[node].files = ns.ls(node)
+                server[node].adjacent = ns.scan(node)
+                server[node].worker_running = ns.scriptRunning('/api/work-receiver.js', node)
+            } catch (exception) {
+                ns.print('[ERR]: Skipped server ' + node + ': exception ' + exception)
+            }            
         })
 
         try {
@@ -25,16 +35,4 @@ export async function main(ns) {
 
         await ns.sleep(1000)
     }
-}
-
-async function find_nodes(ns, node) {
-    var next_nodes = ns.scan(node)
-
-    next_nodes.forEach(element => {
-        if (nodes.includes(element))
-            return;
-
-        nodes.push(element);
-        find_nodes(ns, element);
-    });
 }

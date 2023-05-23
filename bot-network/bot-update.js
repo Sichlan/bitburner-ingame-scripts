@@ -17,9 +17,9 @@ export async function main(ns) {
 
 		ns.scriptKill(botScript, target);
         ns.killall(target)
-		ns.scp(path, target);
+		ns.scp(path, target, 'home');
 
 		let threads = Math.floor((ns.getServerMaxRam(target) - ns.getServerUsedRam(target)) / ns.getScriptRam(path));
-		ns.exec(botScript, target, threads, victim);
+		ns.exec(path, target, threads, victim);
 	}
 }

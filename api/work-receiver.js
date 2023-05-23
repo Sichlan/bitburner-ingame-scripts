@@ -1,3 +1,4 @@
+/** @param {NS} ns */
 export async function main(ns) {
     
     // Periodically check if work is available
@@ -6,7 +7,7 @@ export async function main(ns) {
     while (true) {
         try {
             // Try to reach the API
-            const response = await fetch('http://127.0.0.1:5000/worker?worker-name=' + ns.getHostName(), {
+            const response = await fetch('http://127.0.0.1:5000/worker?worker-name=' + ns.getHostname(), {
                 method: 'GET'
             });
             const data = await response.json();
@@ -16,7 +17,7 @@ export async function main(ns) {
                 throw new Exception('Data contained no data')
 
             // Expected data structure: {
-            //  script: 'scriptName.js',
+            //  script: 'path/to/scriptName.js',
             //  parameters: [
             //      'param1',
             //      'param2'
@@ -33,19 +34,34 @@ export async function main(ns) {
                 continue;
             } else if (data['script'] == 'killall') {
                 // emergency killer that can terminate all scripts on the host except for this script
-                ns.killall(ns,getHostName(), true)
+                ns.killall(ns.getHostname(), true)
                 continue;
             } else {
                 if (!ns.fileExists(data['script'])) {
-                    ns.wget()
+                    ns.wget('https://github.com/Sichlan/bitburner-ingame-scripts/' + data['script'], data['script'])
                 }
 
-                ns.run()
+                // if the run fails, this returns pid 0
+                const pid = ns.run(data['script'], (data['threads'] ? data['threads'] : 1), data['parameters'])
+
+                // construct the status to send to the server
+                const status = {
+                    'script': data['script'],
+                    'threads': data['threads'],
+                    'parameters': data['parameters'],
+                    'started': pid != 0
+                }
+
+                // post the status to the API
+                const response = await fetch('http://127.0.0.1:5000/worker/start-work?worker-name=' + ns.getHostname(), {
+                    method: 'POST',
+                    body: JSON.stringify(status)
+                });
             }
 
         } catch (exception) {
             // If API couldn't be reached, do autonomous work
-            ns.tprint('Encountered an error: ' + error)
+            ns.print('Encountered an error: ' + exception)
         }
 
         await ns.sleep(1000)
