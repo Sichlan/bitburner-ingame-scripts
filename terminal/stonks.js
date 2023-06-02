@@ -1,7 +1,7 @@
 /** @param {NS} ns **/
 export async function main(ns) {
-	ns.disableLog("ALL");
-	const fees = 1_000_000_000; // 100k commission
+	// ns.disableLog("ALL");
+	const fees = 100_000; // 100k commission
 	const tradeFees = 2 * fees; // buy + sell transactions
 	let overallValue = 0;
 
