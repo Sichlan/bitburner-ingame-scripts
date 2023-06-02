@@ -5,5 +5,5 @@ import { find_path } from '/util/network-util.js'
  * @param {NS} ns The netscript standard library.
  */
 export async function main(ns) {
-
+    ns.print(find_path(ns, ns.args[0]))
 }

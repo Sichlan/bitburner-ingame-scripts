@@ -41,4 +41,4 @@ function find_path(ns, target) {
     return nestArr;
 }
 
-export { find_nodes }
+export { find_nodes, find_path }
