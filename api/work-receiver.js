@@ -1,13 +1,7 @@
+import { download_file } from '../util/file-downloader';
+
 /** @param {NS} ns */
 export async function main(ns) {
-    
-    // ensure file downloader exists
-    if (!ns.fileExists('../util/file-downloader.js')) {
-        await ns.wget('https://raw.githubusercontent.com/Sichlan/bitburner-ingame-scripts/master/util/file-downloader.js', 'file-downloader.js', ns.getHostname());
-        ns.mv(ns.getHostname(), 'file-downloader.js', '/util/file-downloader.js')
-    }
-
-    let { download_file } = await import('/util/file-downloader.js')
 
     // Periodically check if work is available
     // This btw is the only script to ever run with an infinite loop,
