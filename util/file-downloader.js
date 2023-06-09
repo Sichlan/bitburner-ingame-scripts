@@ -10,7 +10,7 @@ export async function download_file(ns, filePath, host) {
     let filename = /[^/]*$/.exec(filePath)[0];
 
     // download latest file
-    await ns.wget(git + filePath, filename, host);
+    await ns.wget(git_addresss + filePath, filename, host);
 
     // move file to directory
     ns.mv(host, filename, '/' + filePath)

@@ -1,6 +1,7 @@
 const fileMappings = [
     // utils. Do not execute them (threads = 0)
     ['util/network-util.js', 0, ''],
+    ['util/file-downloader.js', 0, ''],
 
     // api worker
     ['api/send-hack-data.js', 1, ''],
