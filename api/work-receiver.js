@@ -1,6 +1,14 @@
 /** @param {NS} ns */
 export async function main(ns) {
     
+    // ensure file downloader exists
+    if (!ns.fileExists('../util/file-downloader.js')) {
+        await ns.wget('https://raw.githubusercontent.com/Sichlan/bitburner-ingame-scripts/master/util/file-downloader.js', 'file-downloader.js', ns.getHostname());
+        ns.mv(ns.getHostname(), 'file-downloader.js', '/util/file-downloader.js')
+    }
+
+    let { download_file } = await import('../util/file-downloader.js')
+
     // Periodically check if work is available
     // This btw is the only script to ever run with an infinite loop,
     // all others are designed to be run once so the API can issue new calls after each execution.
@@ -38,7 +46,7 @@ export async function main(ns) {
                 continue;
             } else {
                 if (!ns.fileExists(data['script'])) {
-                    ns.wget('https://github.com/Sichlan/bitburner-ingame-scripts/' + data['script'], data['script'])
+                    download_file(ns, data['script'], ns.getHostname())
                 }
 
                 // if the run fails, this returns pid 0
