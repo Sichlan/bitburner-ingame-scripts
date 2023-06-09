@@ -7,7 +7,7 @@ export async function main(ns) {
         ns.mv(ns.getHostname(), 'file-downloader.js', '/util/file-downloader.js')
     }
 
-    let { download_file } = await import('../util/file-downloader.js')
+    let { download_file } = await import('/util/file-downloader.js')
 
     // Periodically check if work is available
     // This btw is the only script to ever run with an infinite loop,
