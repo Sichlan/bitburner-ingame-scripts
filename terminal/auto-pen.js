@@ -5,23 +5,23 @@ import { find_nodes } from "/util/network-util.js"
  * @param {NS} ns The netscript standard library.
  */
 export async function main(ns) {
+    ns.disableLog('getServer')
+    ns.disableLog('getServerNumPortsRequired')
+    ns.disableLog('getServerRequiredHackingLevel')
+    ns.disableLog('getHackingLevel')
+    ns.disableLog('getServerMaxRam')
+    ns.disableLog('getServerUsedRam')
+
+    const portOpenerMap = [
+        [`BruteSSH.exe`, `sshPortOpen`, ns.brutessh],
+        [`FTPCrack.exe`, `ftpPortOpen`, ns.ftpcrack],
+        [`relaySMTP.exe`, `smtpPortOpen`, ns.relaysmtp],
+        [`HTTPWorm.exe`, `httpPortOpen`, ns.httpworm],
+        [`SQLInject.exe`, `sqlPortOpen`, ns.sqlinject],
+    ]
+
     while (true) {
         const nodes = await find_nodes(ns, 'home', [])
-
-        ns.disableLog('getServer')
-        ns.disableLog('getServerNumPortsRequired')
-        ns.disableLog('getServerRequiredHackingLevel')
-        ns.disableLog('getHackingLevel')
-        ns.disableLog('getServerMaxRam')
-        ns.disableLog('getServerUsedRam')
-
-        const portOpenerMap = [
-            [`BruteSSH.exe`, `sshPortOpen`, ns.brutessh],
-            [`FTPCrack.exe`, `ftpPortOpen`, ns.ftpcrack],
-            [`relaySMTP.exe`, `smtpPortOpen`, ns.relaysmtp],
-            [`HTTPWorm.exe`, `httpPortOpen`, ns.httpworm],
-            [`SQLInject.exe`, `sqlPortOpen`, ns.sqlinject],
-        ]
 
         const player_level = ns.getHackingLevel()
 
